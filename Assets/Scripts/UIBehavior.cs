@@ -4,16 +4,51 @@ using UnityEngine;
 
 public class UIBehavior : MonoBehaviour
 {
-    PlayerBehavior player;
+    public GameObject playerPrefab;
+
     bool isGameOver;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(false);
-        player = FindObjectOfType<PlayerBehavior>();
         isGameOver = false;
-        player.OnPlayerDeath += GameOver;
+        gameObject.SetActive(false);
+
+        PlayerBehavior playerBehavior = FindObjectOfType<PlayerBehavior>();
+        playerBehavior.OnPlayerDeath += GameOver;
+    }
+
+    void Update()
+    {
+        if (isGameOver && Input.GetKeyDown(KeyCode.Space))
+        {
+            ResetGame();
+        }
+    }
+
+    void ResetGame()
+    {
+        isGameOver = false;
+        gameObject.SetActive(false);
+
+        DeleteObstacles();
+        SpawnPlayer();
+    }
+
+    void DeleteObstacles()
+    {
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach (GameObject obstacle in obstacles)
+        {
+            Destroy(obstacle);
+        }
+    }
+
+    void SpawnPlayer()
+    {
+        Vector3 spawnPosition = new Vector3(0f, -4f, 0f);
+        GameObject newPlayer = Instantiate(playerPrefab, spawnPosition, Quaternion.Euler(Vector3.zero));
+        newPlayer.GetComponent<PlayerBehavior>().OnPlayerDeath += GameOver;
     }
 
     public void GameOver()

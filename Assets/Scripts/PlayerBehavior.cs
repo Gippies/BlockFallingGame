@@ -19,12 +19,6 @@ public class PlayerBehavior : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void FixedUpdate()
     {
         UpdatePosition();
@@ -46,6 +40,8 @@ public class PlayerBehavior : MonoBehaviour
     {
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
         playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.fixedDeltaTime);
+
+        // Wrap around screen
         if (transform.position.x > screenEdge)
         {
             playerRigidbody.MovePosition(new Vector3(-transform.position.x + transform.localScale.x, transform.position.y, transform.position.z));

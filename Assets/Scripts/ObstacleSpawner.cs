@@ -15,12 +15,6 @@ public class ObstacleSpawner : MonoBehaviour
         StartCoroutine(ContinuouslySpawnObstacles());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator ContinuouslySpawnObstacles()
     {
         while (true)
