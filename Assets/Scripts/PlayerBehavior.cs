@@ -25,5 +25,13 @@ public class PlayerBehavior : MonoBehaviour
     {
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
         playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.fixedDeltaTime);
+        if (transform.position.x > screenEdge)
+        {
+            playerRigidbody.MovePosition(new Vector3(-transform.position.x + transform.localScale.x, transform.position.y, transform.position.z));
+        }
+        else if (transform.position.x < -screenEdge)
+        {
+            playerRigidbody.MovePosition(new Vector3(-transform.position.x - transform.localScale.x, transform.position.y, transform.position.z));
+        }
     }
 }
