@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIBehavior : MonoBehaviour
 {
     public GameObject playerPrefab;
 
+    Canvas uiCanvas;
     bool isGameOver;
+    float timeScore;
+    Text timeText;
 
     // Start is called before the first frame update
     void Start()
     {
+        uiCanvas = gameObject.GetComponent<Canvas>();
+        timeText = gameObject.transform.Find("TimeText").GetComponent<Text>();
+
         isGameOver = false;
-        gameObject.SetActive(false);
+        uiCanvas.enabled = false;
+        timeScore = 0.0f;
 
         PlayerBehavior playerBehavior = FindObjectOfType<PlayerBehavior>();
         playerBehavior.OnPlayerDeath += GameOver;
@@ -24,12 +32,17 @@ public class UIBehavior : MonoBehaviour
         {
             ResetGame();
         }
+        if (!isGameOver)
+        {
+            timeScore += Time.deltaTime;
+        }
     }
 
     void ResetGame()
     {
         isGameOver = false;
-        gameObject.SetActive(false);
+        uiCanvas.enabled = false;
+        timeScore = 0.0f;
 
         DeleteObstacles();
         SpawnPlayer();
@@ -54,6 +67,8 @@ public class UIBehavior : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
-        gameObject.SetActive(true);
+        uiCanvas.enabled = true;
+        int roundedTimeScore = Mathf.RoundToInt(timeScore);
+        timeText.text = "You Survived " + roundedTimeScore + " Seconds";
     }
 }
