@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    public event Action OnPlayerDeath;
+
     const float speed = 6f;
+    const float screenEdge = 5.5f;
 
     Vector3 input;
     Rigidbody playerRigidbody;
@@ -22,6 +26,23 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     void FixedUpdate()
+    {
+        UpdatePosition();
+    }
+
+    void OnTriggerEnter(Collider triggerCollider)
+    {
+        if (triggerCollider.tag == "Obstacle")
+        {
+            if (OnPlayerDeath != null)
+            {
+                OnPlayerDeath();
+            }
+            Destroy(gameObject);
+        }
+    }
+
+    void UpdatePosition()
     {
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
         playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.fixedDeltaTime);
