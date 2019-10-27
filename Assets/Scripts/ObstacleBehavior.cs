@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ObstacleBehavior : MonoBehaviour
 {
+    const float speed = 7f;
+
     float lowerBound;
 
     void Start()
@@ -14,6 +16,8 @@ public class ObstacleBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.Translate(Vector3.down * speed * Time.deltaTime);
+
         if (transform.position.y < lowerBound)
         {
             Destroy(gameObject);

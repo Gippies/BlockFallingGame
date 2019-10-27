@@ -7,8 +7,8 @@ public class PlayerBehavior : MonoBehaviour
 {
     public event Action OnPlayerDeath;
 
-    const float speed = 6f;
-    
+    const float speed = 15f;
+
     Vector3 input;
     Rigidbody playerRigidbody;
     float screenHalfWidthInWorldlUnits;
@@ -21,7 +21,7 @@ public class PlayerBehavior : MonoBehaviour
         screenHalfWidthInWorldlUnits = Camera.main.aspect * Camera.main.orthographicSize + playerWidth;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         UpdatePosition();
     }
@@ -41,7 +41,7 @@ public class PlayerBehavior : MonoBehaviour
     void UpdatePosition()
     {
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
-        playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.fixedDeltaTime);
+        playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.deltaTime);
 
         // Wrap around screen
         if (transform.position.x > screenHalfWidthInWorldlUnits)
