@@ -8,15 +8,17 @@ public class PlayerBehavior : MonoBehaviour
     public event Action OnPlayerDeath;
 
     const float speed = 6f;
-    const float screenEdge = 5.5f;
-
+    
     Vector3 input;
     Rigidbody playerRigidbody;
+    float screenHalfWidthInWorldlUnits;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
+        float playerWidth = transform.localScale.x / 2.0f;
+        screenHalfWidthInWorldlUnits = Camera.main.aspect * Camera.main.orthographicSize + playerWidth;
     }
 
     void FixedUpdate()
@@ -42,13 +44,13 @@ public class PlayerBehavior : MonoBehaviour
         playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.fixedDeltaTime);
 
         // Wrap around screen
-        if (transform.position.x > screenEdge)
+        if (transform.position.x > screenHalfWidthInWorldlUnits)
         {
-            playerRigidbody.MovePosition(new Vector3(-transform.position.x + transform.localScale.x, transform.position.y, transform.position.z));
+            playerRigidbody.MovePosition(new Vector3(-screenHalfWidthInWorldlUnits, transform.position.y, transform.position.z));
         }
-        else if (transform.position.x < -screenEdge)
+        else if (transform.position.x < -screenHalfWidthInWorldlUnits)
         {
-            playerRigidbody.MovePosition(new Vector3(-transform.position.x - transform.localScale.x, transform.position.y, transform.position.z));
+            playerRigidbody.MovePosition(new Vector3(screenHalfWidthInWorldlUnits, transform.position.y, transform.position.z));
         }
     }
 }

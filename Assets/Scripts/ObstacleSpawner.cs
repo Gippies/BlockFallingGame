@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-
     public GameObject obstaclePrefab;
 
     float randomTimeInterval;
+    float screenHalfWidthInWorldlUnits;
+    float spawnHeight;
 
     // Start is called before the first frame update
     void Start()
     {
+        screenHalfWidthInWorldlUnits = Camera.main.aspect * Camera.main.orthographicSize;
+        spawnHeight = Camera.main.orthographicSize + 2.0f;
         StartCoroutine(ContinuouslySpawnObstacles());
     }
 
@@ -27,7 +30,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
-        Vector3 randomSpawnPosition = new Vector3(Random.Range(-5.5f, 5.5f), 7.0f, 0.0f);
+        Vector3 randomSpawnPosition = new Vector3(Random.Range(-screenHalfWidthInWorldlUnits, screenHalfWidthInWorldlUnits), spawnHeight, 0.0f);
         Vector3 randomRotation = Vector3.forward * Random.Range(0f, 360f);
         float randomSize = Random.Range(0.25f, 3.0f);
 
