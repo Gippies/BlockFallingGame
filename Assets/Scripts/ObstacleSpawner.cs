@@ -6,7 +6,10 @@ public class ObstacleSpawner : MonoBehaviour
 {
     public GameObject obstaclePrefab;
 
-    float randomTimeInterval;
+    const float maxSpawnTime = 0.5f;
+    const float minSpawnTime = 0.01f;
+
+    float spawnTimeInterval;
     float screenHalfWidthInWorldlUnits;
 
     // Start is called before the first frame update
@@ -21,8 +24,8 @@ public class ObstacleSpawner : MonoBehaviour
         while (true)
         {
             SpawnObstacle();
-            randomTimeInterval = Random.Range(0.1f, 1.0f);
-            yield return new WaitForSeconds(randomTimeInterval);
+            spawnTimeInterval = Mathf.Lerp(maxSpawnTime, minSpawnTime, Difficulty.GetDifficultyPercent());
+            yield return new WaitForSeconds(spawnTimeInterval);
         }
     }
 

@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class ObstacleBehavior : MonoBehaviour
 {
-    const float speed = 7f;
+    const float minSpeed = 7f;
+    const float maxSpeed = 20f;
 
+    float speed;
     float lowerBound;
 
     void Start()
     {
+        speed = Mathf.Lerp(minSpeed, maxSpeed, Difficulty.GetDifficultyPercent());
         lowerBound = -Camera.main.orthographicSize * 2.0f;
     }
 
