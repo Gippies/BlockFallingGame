@@ -8,13 +8,11 @@ public class ObstacleSpawner : MonoBehaviour
 
     float randomTimeInterval;
     float screenHalfWidthInWorldlUnits;
-    float spawnHeight;
 
     // Start is called before the first frame update
     void Start()
     {
         screenHalfWidthInWorldlUnits = Camera.main.aspect * Camera.main.orthographicSize;
-        spawnHeight = Camera.main.orthographicSize + 2.0f;
         StartCoroutine(ContinuouslySpawnObstacles());
     }
 
@@ -30,9 +28,9 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
-        Vector3 randomSpawnPosition = new Vector3(Random.Range(-screenHalfWidthInWorldlUnits, screenHalfWidthInWorldlUnits), spawnHeight, 0.0f);
-        Vector3 randomRotation = Vector3.forward * Random.Range(0f, 360f);
         float randomSize = Random.Range(0.25f, 3.0f);
+        Vector3 randomSpawnPosition = new Vector3(Random.Range(-screenHalfWidthInWorldlUnits, screenHalfWidthInWorldlUnits), Camera.main.orthographicSize + randomSize, 0.0f);
+        Vector3 randomRotation = Vector3.forward * Random.Range(0f, 360f);
 
         GameObject newObstacle = (GameObject)Instantiate(obstaclePrefab, randomSpawnPosition, Quaternion.Euler(randomRotation));
         newObstacle.transform.localScale = new Vector3(randomSize, randomSize, 1.0f);
