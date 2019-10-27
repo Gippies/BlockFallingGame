@@ -7,16 +7,14 @@ public class PlayerBehavior : MonoBehaviour
 {
     public event Action OnPlayerDeath;
 
-    const float speed = 15f;
+    const float speed = 10f;
 
     Vector3 input;
-    Rigidbody playerRigidbody;
     float screenHalfWidthInWorldlUnits;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
         float playerWidth = transform.localScale.x / 2.0f;
         screenHalfWidthInWorldlUnits = Camera.main.aspect * Camera.main.orthographicSize + playerWidth;
     }
@@ -26,7 +24,7 @@ public class PlayerBehavior : MonoBehaviour
         UpdatePosition();
     }
 
-    void OnTriggerEnter(Collider triggerCollider)
+    void OnTriggerEnter2D(Collider2D triggerCollider)
     {
         if (triggerCollider.tag == "Obstacle")
         {
@@ -41,16 +39,16 @@ public class PlayerBehavior : MonoBehaviour
     void UpdatePosition()
     {
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
-        playerRigidbody.MovePosition(transform.position + input.normalized * speed * Time.deltaTime);
+        transform.Translate(input.normalized * speed * Time.deltaTime);
 
         // Wrap around screen
         if (transform.position.x > screenHalfWidthInWorldlUnits)
         {
-            playerRigidbody.MovePosition(new Vector3(-screenHalfWidthInWorldlUnits, transform.position.y, transform.position.z));
+            transform.position = new Vector3(-screenHalfWidthInWorldlUnits, transform.position.y, transform.position.z);
         }
         else if (transform.position.x < -screenHalfWidthInWorldlUnits)
         {
-            playerRigidbody.MovePosition(new Vector3(screenHalfWidthInWorldlUnits, transform.position.y, transform.position.z));
+            transform.position = new Vector3(screenHalfWidthInWorldlUnits, transform.position.y, transform.position.z);
         }
     }
 }
